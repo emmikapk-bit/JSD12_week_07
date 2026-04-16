@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1 id="jsdTag">JSD12</h1>
+      <button id="changeName" onclick="changeName()">
+        Click for change Css Cool Cool
+      </button>
+    </div>
+    <hr />
+    <div>
+      <h1>Enter your name</h1>
+      <label for="">Input: </label>
+      <input type="text" id="inputName" />
+      <p id="displayText">Your name'll display here!</p>
+      <button id="btnShow">Click to Show🌸</button>
+    </div>
+  </body>
+  <script>
+    //change name when click!`
+    function changeName() {
+      let jsdTag = document.getElementById("jsdTag");
+      jsdTag.innerText = "Emmi🌸";
+      jsdTag.style.background = "brown";
+      jsdTag.style.color = "pink";
+    }
+    //input your name to box and show input value
+
+    const inputElement = document.getElementById("inputName");
+    const displayElement = document.getElementById("displayText");
+    const btnShow = document.getElementById("btnShow");
+    // 1. สั่งให้ปุ่ม "รอฟัง" การคลิก
+    btnShow.addEventListener("click", function () {
+      // 2. ดึงชื่อที่พิมพ์อยู่ในช่อง Input ออกมาเก็บในตัวแปร
+      const name = inputElement.value;
+
+      // 3. เอาชื่อนั้นไปเปลี่ยนข้อความใน displayElement
+      displayElement.innerText = `สวัสดีคุณ ${name}`;
+
+      // (Optional) สั่งล้างช่องพิมพ์ชื่อให้ว่างหลังกดเสร็จ
+      inputElement.value = "";
+    });
+  </script>
+</html>

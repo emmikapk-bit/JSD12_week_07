@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="counts">count Click</h1>
+
+    <button id="countClick" onclick="incNum()">Click</button>
+  </body>
+  <script>
+    let n = 0;
+    function incNum() {
+      n = n + 1;
+      document.getElementById("counts").innerText = n;
+    }
+  </script>
+</html>
