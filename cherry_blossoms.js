@@ -1,3 +1,10 @@
+const bgm = new Audio("bgm.mp3");
+bgm.loop = true; // ตั้งค่าให้เพลงเล่นวนลูปไปเรื่อยๆ
+bgm.volume = 0.5; // ปรับความดัง (0.0 ถึง 1.0)
+
+const clickSound = new Audio("Click.mp3");
+clickSound.volume = 0.4;
+
 const state = {
   Sakura: 0,
   clickPowerLuv: 1,
@@ -27,6 +34,7 @@ function render() {
     displayText.style.background = "white";
     displayText.style.borderRadius = "50px";
   } else {
+    displayText.style.background = "transparent";
     displayText.textContent = "";
   }
 
@@ -43,17 +51,14 @@ function render() {
   buyClickButton.disabled = state.Sakura < state.clickUpgradeCost;
 
   buyAutoButton.disabled = state.Sakura < state.autoUpgradeCost;
-}
 
-sakuraBnt.addEventListener("click", () => {
-  state.Sakura += state.clickPowerLuv;
-  render();
-});
+  buySakuraButton.disabled = state.Sakura < state.CherryBlossoms;
+}
 
 function createSakura() {
   const petal = document.createElement("div");
   petal.className =
-    "fixed pointer-events-none z-[999] text-pink-400 select-none transition-all duration-300 ease-linear";
+    "fixed pointer-events-none z-[999] text-pink-400 select-none transition-all duration-300 ease-linear opacity-0";
   petal.innerHTML = "🌸";
 
   const startLeft = Math.random() * 100;
@@ -64,6 +69,7 @@ function createSakura() {
   document.body.appendChild(petal);
 
   setTimeout(() => {
+    petal.classList.replace("opacity-0", "opacity-100");
     petal.style.top = "110vh"; // ให้ร่วงลงไปล่างจอ
     petal.style.left = startLeft + (Math.random() * 20 - 10) + "vw"; // ให้ร่วงแบบเฉียงๆ นิดหน่อย
     petal.style.transform = `rotate(${Math.random() * 360}deg)`; // หมุนดอกไม้ตอนร่วง
@@ -75,20 +81,11 @@ function createSakura() {
   }, 5000);
 }
 
-buySakuraButton.addEventListener("click", () => {
-  // เช็คว่ามี Sakura พอซื้อไหม (ราคาคือ CherryBlossoms: 50)
-  if (state.Sakura >= state.CherryBlossoms) {
-    state.Sakura -= state.CherryBlossoms;
-
-    // เริ่มทำงาน: เสกดอกไม้ร่วงทุกๆ 0.3 วินาที
-    setInterval(createSakura, 300);
-
-    buySakuraButton.Sakura -= state.CherryBlossoms;
-    buySakuraButton.CherryBlossoms += 1;
-    buySakuraButton.CherryBlossoms += 20;
-
-    render(); // อัปเดตแต้มบนหน้าจอ
-  }
+sakuraBnt.addEventListener("click", () => {
+  state.Sakura += state.clickPowerLuv;
+  clickSound.currentTime = 0;
+  clickSound.play();
+  render();
 });
 
 buyClickButton.addEventListener("click", () => {
@@ -120,4 +117,19 @@ window.setInterval(() => {
   render();
 }, 1000);
 
+render();
+
+buySakuraButton.addEventListener("click", () => {
+  // เช็คว่ามี Sakura พอซื้อไหม (ราคาคือ CherryBlossoms: 50)
+  if (state.Sakura >= state.CherryBlossoms) {
+    state.Sakura -= state.CherryBlossoms;
+    bgm.play();
+
+    // เริ่มทำงาน: เสกดอกไม้ร่วงทุกๆ 0.3 วินาที
+    setInterval(createSakura, 300);
+
+    buySakuraButton.Sakura -= state.CherryBlossoms;
+    state.CherryBlossoms += 20;
+  }
+});
 render();
